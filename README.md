@@ -30,6 +30,17 @@ them current as the code evolves. It helps whether you work solo or on a team:
   creating a new one. Several teammates can run it against the same project and everyone lands on one
   page per feature instead of spawning copies.
 
+## Requirements
+
+- **Required:** `git` and `python3` (standard library only, no packages to install). This is enough to
+  produce the local HTML wiki.
+- **Optional but recommended:** an MCP connection for the parts that need external data:
+  - a project-management MCP (Jira, Linear, GitHub, Shortcut, or Asana) for ticket enrichment,
+  - a docs MCP (Confluence, Notion, or Linear) or the `gh` CLI for publishing to a shared space.
+
+The plugin does not ship or require any MCP. It uses whatever you have connected and degrades to a
+local wiki when nothing is. See [Connecting your tools](#connecting-your-tools-mcp).
+
 ## Install
 
 This repo is a Claude Code plugin marketplace. From GitHub:
@@ -48,6 +59,28 @@ Or from a local checkout:
 
 (Or copy `skills/building-feature-wikis` into a `.claude/skills/` directory to use the skill alone,
 with no plugin install.)
+
+## Connecting your tools (MCP)
+
+feature-wiki adapts to whatever MCP servers you have connected in Claude Code. Connect the ones you
+want, then run `/feature-wiki-init` to bind them.
+
+What each connection unlocks:
+
+- **Read (Jira, Linear, GitHub, Shortcut, Asana):** pulls real ticket titles, descriptions, status, and
+  epic links into each doc. Without it, docs still link the ticket keys found in your commits.
+- **Write (Confluence, Notion, Linear, or `gh` for a GitHub wiki):** publishes and updates pages in a
+  shared space. Without it, output is the local HTML wiki.
+
+How to connect, in short:
+
+1. Add the server, e.g. `claude mcp add --transport sse linear https://mcp.linear.app/sse` (use the
+   current URL from the provider's MCP docs; some servers use `--transport http`).
+2. Run `/mcp` to authenticate and to verify what is connected.
+
+For per-provider notes (Atlassian covering Jira and Confluence, Notion, GitHub via `gh`, and so on) and
+the no-tools-connected behaviour, see
+[`reference/mcp-setup.md`](skills/building-feature-wikis/reference/mcp-setup.md).
 
 ## Use
 

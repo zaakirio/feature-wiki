@@ -61,10 +61,15 @@ runs are non-interactive. Config schema is documented in `reference/providers.md
 ### 1. Detect providers
 
 Discover which MCPs are connected and bind them to capabilities (PM-read, docs-write). Do NOT hardcode
-tool names — match the connected tools to the registry. Procedure and the full registry (Jira, Linear,
+tool names; match the connected tools to the registry. Procedure and the full registry (Jira, Linear,
 GitHub, Shortcut, Asana for read; Confluence, Linear, Notion, GitHub wiki, local HTML for write) are in
-`reference/providers.md`. If no PM MCP is connected, fall back to linking ticket URLs parsed from commit
-messages (no enrichment).
+`reference/providers.md`.
+
+Tell the user plainly what you found and what it unlocks, e.g. "Jira connected (ticket enrichment on),
+no docs provider connected (output will be local HTML only)." If the user wants a provider that is not
+connected (enrichment, or publishing to a shared space), do NOT silently degrade: point them to
+`reference/mcp-setup.md` for how to connect it, then continue. If no PM MCP is connected and the user is
+fine with that, fall back to linking ticket keys parsed from commit messages (no enrichment).
 
 ### 2. Mine history
 
@@ -116,6 +121,7 @@ python3 scripts/manifest.py record <slug> --provider <p> --page-id <id> --url <u
 
 ## References
 
+- `reference/mcp-setup.md` — user-facing guide for connecting the PM/docs MCPs; what each unlocks.
 - `reference/providers.md` — adapter registry, provider detection, the **deduplication contract**, config schema.
 - `reference/feature-grouping.md` — how commits become features; tuning the heuristics.
 - `reference/doc-template.md` — the team-onboarding doc template and style rules.
