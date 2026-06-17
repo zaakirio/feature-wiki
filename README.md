@@ -73,6 +73,10 @@ self-triggers.
 
 ## How it works
 
+![feature-wiki pipeline: git history and PM tickets flow through six stages into deduplicated feature docs](assets/how-it-works.png)
+
+*Editable source: [`assets/how-it-works.excalidraw`](assets/how-it-works.excalidraw) — open it at [excalidraw.com](https://excalidraw.com) (File > Open, or drag it onto the canvas).* The same pipeline, as text:
+
 ```
 discover repo + scope  ->  mine git history into features  ->  enrich from the PM tool
         ->  one subagent per feature reads code + writes a doc  ->  check what changed
