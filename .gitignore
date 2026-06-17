@@ -1,0 +1,12 @@
+# Generated working dir for a target repo's wiki run
+.featurewiki/
+
+# OS / editor cruft
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc

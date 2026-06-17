@@ -1,0 +1,25 @@
+{
+  "name": "feature-wiki-marketplace",
+  "owner": {
+    "name": "zaakirio",
+    "url": "https://github.com/zaakirio"
+  },
+  "metadata": {
+    "description": "Plugins for turning codebases into documentation.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "feature-wiki",
+      "source": "./",
+      "description": "Build a deduplicated feature wiki from git history + PM tickets, published to Confluence / Linear / Notion / GitHub wiki / local HTML.",
+      "author": {
+        "name": "zaakirio",
+        "url": "https://github.com/zaakirio"
+      },
+      "homepage": "https://github.com/zaakirio/feature-wiki#readme",
+      "license": "MIT",
+      "keywords": ["documentation", "wiki", "git-history", "onboarding", "jira", "linear", "confluence"]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "feature-wiki",
+  "version": "0.1.0",
+  "description": "Reconstructs the features an author shipped from git history, enriches them with project-management ticket context (Jira, Linear, GitHub, etc.), and publishes deduplicated documentation to Confluence, Linear, Notion, a GitHub wiki, or a self-contained local HTML wiki.",
+  "author": {
+    "name": "zaakirio",
+    "url": "https://github.com/zaakirio"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/zaakirio/feature-wiki#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaakirio/feature-wiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zaakirio/feature-wiki/issues"
+  },
+  "keywords": [
+    "documentation",
+    "wiki",
+    "feature-documentation",
+    "git-history",
+    "onboarding",
+    "jira",
+    "linear",
+    "confluence",
+    "notion",
+    "github-wiki",
+    "code-documentation",
+    "developer-tools",
+    "claude-code",
+    "claude-skill"
+  ],
+  "skills": ["skills/building-feature-wikis"],
+  "commands": ["commands"]
+}

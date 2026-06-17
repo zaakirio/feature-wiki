@@ -1,0 +1,41 @@
+{
+  "skill": "building-feature-wikis",
+  "scenarios": [
+    {
+      "name": "single-feature-local-no-pm",
+      "query": "Build a local wiki of the features I built in this repo.",
+      "setup": "Small repo, commits by one author, conventional-commit scopes, NO project-management MCP connected.",
+      "expected_behavior": [
+        "Resolves the author from git config and scopes the mine to that author",
+        "Runs mine_history.py and groups commits into features",
+        "Falls back to link-only mode (no ticket enrichment) without erroring",
+        "Writes one doc per feature with the dedup marker on line 1 and no markdown tables",
+        "Renders a local index.html + content.js that opens without a server"
+      ]
+    },
+    {
+      "name": "jira-confluence-rerun-dedup",
+      "query": "Publish my feature docs to Confluence.",
+      "setup": "Repo with PROJ-* commits; Jira + Confluence MCPs connected; a prior run already published two of the features (recorded in manifest AND present on Confluence).",
+      "expected_behavior": [
+        "Detects and binds Jira (read) and Confluence (write) by capability, not hardcoded names",
+        "Enriches features with Jira descriptions and links",
+        "For already-published features, SEARCHES Confluence by the featureWikiId marker and UPDATES in place",
+        "Creates pages only for genuinely new features",
+        "Never creates a second page for a ticket that already has one",
+        "Records every published page in the manifest"
+      ]
+    },
+    {
+      "name": "shared-ticket-multiple-authors",
+      "query": "Document the features I shipped, scope to me.",
+      "setup": "A ticket/epic touched by several authors; a colleague already created the page for that ticket on the target.",
+      "expected_behavior": [
+        "Scopes commit mining to the requesting author only",
+        "Still resolves the feature identity to the shared ticket/epic key",
+        "Finds the colleague's existing page via marker search and updates it rather than duplicating",
+        "Flags any pre-existing duplicate pages for manual merge instead of auto-deleting"
+      ]
+    }
+  ]
+}
