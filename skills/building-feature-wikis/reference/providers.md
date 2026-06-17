@@ -132,5 +132,5 @@ Collision and merge notes:
 
 - `scope.mode`: `author` (default) or `all`.
 - `groupBy`: `ticket` (default), `branch`, or `scope`.
-- `lens`: `onboarding` (default) or `adr` — selects the template variant.
+- `lens`: `onboarding` (default), `adr`, or `interview` — selects the template variant.
 - `writeTargets`: one or more; each must name a provider from the write-adapter list.

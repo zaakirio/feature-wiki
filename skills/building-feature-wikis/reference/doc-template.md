@@ -2,8 +2,9 @@
 
 This is the default `onboarding` lens: neutral reference documentation that helps a new engineer (or
 your future self returning to an old side project) understand what a feature does, how it fits the
-system, and how to work on it. (The `adr` lens reframes around the decision and its alternatives —
-switch via `lens` in config.)
+system, and how to work on it. (Other lenses: `interview` adds a "Talking points" section and a
+sharper trade-offs focus, for personal interview/portfolio prep; `adr` reframes around the decision
+and its alternatives. Switch via `lens` in config.)
 
 ## Hard rules
 - **No markdown tables, no `|` pipe character** except inside fenced ASCII diagrams. Use lists/prose —
@@ -36,4 +37,6 @@ Keep it proportionate to the feature: a small fix is one screen; a platform is s
 precision over length.
 
 ## Lens variations
+- `interview`: append `## Talking points` (5–8 crisp scaling/consistency/idempotency bullets) and lean
+  harder into trade-offs and what was rejected. For personal interview/portfolio prep, not team docs.
 - `adr`: restructure sections 5–8 around Decision / Context / Alternatives considered / Consequences.
