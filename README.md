@@ -60,28 +60,6 @@ Or from a local checkout:
 (Or copy `skills/building-feature-wikis` into a `.claude/skills/` directory to use the skill alone,
 with no plugin install.)
 
-## Connecting your tools (MCP)
-
-feature-wiki adapts to whatever MCP servers you have connected in Claude Code. Connect the ones you
-want, then run `/feature-wiki-init` to bind them.
-
-What each connection unlocks:
-
-- **Read (Jira, Linear, GitHub, Shortcut, Asana):** pulls real ticket titles, descriptions, status, and
-  epic links into each doc. Without it, docs still link the ticket keys found in your commits.
-- **Write (Confluence, Notion, Linear, or `gh` for a GitHub wiki):** publishes and updates pages in a
-  shared space. Without it, output is the local HTML wiki.
-
-How to connect, in short:
-
-1. Add the server, e.g. `claude mcp add --transport sse linear https://mcp.linear.app/sse` (use the
-   current URL from the provider's MCP docs; some servers use `--transport http`).
-2. Run `/mcp` to authenticate and to verify what is connected.
-
-For per-provider notes (Atlassian covering Jira and Confluence, Notion, GitHub via `gh`, and so on) and
-the no-tools-connected behaviour, see
-[`reference/mcp-setup.md`](skills/building-feature-wikis/reference/mcp-setup.md).
-
 ## Use
 
 ```
@@ -103,6 +81,28 @@ discover repo + scope  ->  mine git history into features  ->  enrich from the P
 
 Stages are deterministic where it matters (git mining, bookkeeping, and HTML bundling are scripts) and
 high-freedom where judgement helps (grouping review, code reconstruction, provider binding).
+
+## Connecting your tools (MCP)
+
+feature-wiki adapts to whatever MCP servers you have connected in Claude Code. Connect the ones you
+want, then run `/feature-wiki-init` to bind them.
+
+What each connection unlocks:
+
+- **Read (Jira, Linear, GitHub, Shortcut, Asana):** pulls real ticket titles, descriptions, status, and
+  epic links into each doc. Without it, docs still link the ticket keys found in your commits.
+- **Write (Confluence, Notion, Linear, or `gh` for a GitHub wiki):** publishes and updates pages in a
+  shared space. Without it, output is the local HTML wiki.
+
+How to connect, in short:
+
+1. Add the server, e.g. `claude mcp add --transport sse linear https://mcp.linear.app/sse` (use the
+   current URL from the provider's MCP docs; some servers use `--transport http`).
+2. Run `/mcp` to authenticate and to verify what is connected.
+
+For per-provider notes (Atlassian covering Jira and Confluence, Notion, GitHub via `gh`, and so on) and
+the no-tools-connected behaviour, see
+[`reference/mcp-setup.md`](skills/building-feature-wikis/reference/mcp-setup.md).
 
 ## Layout
 
