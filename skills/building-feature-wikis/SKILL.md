@@ -11,6 +11,11 @@ ticket's real description, deep-read from the code, written up from a template, 
 documentation target — **without ever creating duplicate pages**, even when several people worked the
 same ticket or epic.
 
+The core product value is durable memory for AI-assisted software work. Do not produce a generic repo
+summary. Produce a feature-level map that future humans and agents can trust: what shipped, why it
+exists, where the implementation lives, what edge cases matter, and which source evidence supports the
+claims.
+
 This skill is an orchestrator. It runs a fixed pipeline, but each stage delegates: deterministic work
 to the bundled scripts, provider-specific work to the adapter registry, and per-feature deep analysis
 to parallel subagents.
@@ -31,9 +36,11 @@ Linear / Notion", "collate the features across my side projects so I can keep tr
 2. **Never use markdown tables or the `|` pipe character** except inside fenced ASCII diagrams. Use
    lists/prose (they survive copy-paste into Confluence/Linear/Notion; tables often do not).
 3. **Cite real code** as `path/to/file.ext:line` relative to the repo root.
-4. **Default scope is the current user's authored commits.** Resolve their git identity first; only
+4. **Do not invent behavior.** If a ticket says something but the code no longer supports it, say that
+   plainly. If evidence is missing, mark the claim as unknown rather than filling the gap.
+5. **Default scope is the current user's authored commits.** Resolve their git identity first; only
    widen to the whole repo when the config or the user says so.
-5. **Read config before asking.** If `.featurewiki/config.json` exists, use it and skip the questions
+6. **Read config before asking.** If `.featurewiki/config.json` exists, use it and skip the questions
    it already answers. Re-runs should be one command.
 
 ## Workflow
@@ -113,10 +120,10 @@ UPDATE that page; else CREATE.
 For local HTML, run `scripts/build_html.py` to emit the self-contained viewer. For Confluence / Linear
 / Notion / GitHub, use the bound write adapter to create-or-update per the dedup decision, stamping the
 marker as a page property/label/front-matter so the next run finds it. Record every published
-`{slug, ticketKey, provider, pageId, url, sourceHash}` back into the manifest:
+`{slug, fwId, provider, pageId, url, sourceHash}` back into the manifest:
 
 ```bash
-python3 scripts/manifest.py record <slug> --provider <p> --page-id <id> --url <url> --hash <sourceHash> --manifest .featurewiki/manifest.json
+python3 scripts/manifest.py record <slug> --fw-id <fwId> --provider <p> --page-id <id> --url <url> --hash <sourceHash> --manifest .featurewiki/manifest.json
 ```
 
 ## References

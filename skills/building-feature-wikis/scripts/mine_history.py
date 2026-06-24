@@ -122,6 +122,22 @@ def clean_branch(name):
     return BRANCH_PREFIX_RE.sub("", name).strip()
 
 
+def ticket_sort_key(ticket):
+    """Sort ticket-like keys deterministically.
+
+    Prefer the smallest numeric suffix within the same prefix, then fall back to
+    lexical order. This matches the documented "lowest-numbered ticket" rule and
+    keeps cross-provider namespaces stable when a feature mentions more than one key.
+    """
+    m = re.match(r"^([^:]+:)?([A-Z][A-Z0-9]+)-(\d+)$", ticket or "")
+    if m:
+        namespace = m.group(1) or ""
+        prefix = m.group(2)
+        number = int(m.group(3))
+        return (namespace, prefix, number, ticket)
+    return ("", "", sys.maxsize, ticket or "")
+
+
 def assign_key(commit, ticket_re, group_by, pr_map):
     """Return (group_key, kind) for a commit per the precedence rules."""
     text = commit["subject"] + " " + commit["body"]
@@ -202,14 +218,20 @@ def main():
         found = {k for c in cs for k in ticket_re.findall(c["subject"] + " " + c["body"])}
         if g["kind"] == "ticket" and key and ticket_re.fullmatch(str(key)):
             found.add(str(key))
-        ticket_keys = sorted(found)
+        ticket_keys = sorted(found, key=ticket_sort_key)
         primary = ticket_keys[0] if ticket_keys else None
         fw_id = primary if primary else f"slug:{slugify(str(key))}"
         title = best_title(cs, str(key))
         slug = slugify((primary + "-" + title) if primary else title)
-        branches = sorted({m.group(1) for c in cs
-                           for line in (c["subject"] + "\n" + c["body"]).splitlines()
-                           for m in [BRANCH_RE.search(line) or BRANCH_RE2.search(line)] if m})
+        branches = set()
+        for c in cs:
+            pr = pr_map.get(c["hash"])
+            if pr and pr[0]:
+                branches.add(pr[0])
+            for line in (c["subject"] + "\n" + c["body"]).splitlines():
+                m = BRANCH_RE.search(line) or BRANCH_RE2.search(line)
+                if m:
+                    branches.add(clean_branch(m.group(1)))
         feat = {
             "slug": slug,
             "fwId": fw_id,
@@ -217,7 +239,7 @@ def main():
             "epicKey": None,
             "title": title,
             "kind": g["kind"],
-            "branches": [clean_branch(b) for b in branches],
+            "branches": sorted(branches),
             "commits": [{"hash": c["hash"], "date": c["date"],
                          "subject": c["subject"], "author": c["author"]} for c in cs],
             "firstDate": min(c["date"] for c in cs),
@@ -240,6 +262,11 @@ def main():
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
     print(f"Wrote {len(features)} features to {args.out}")
+    if not features:
+        print("warning: no features were produced", file=sys.stderr)
+        if not args.include_unassigned:
+            print("hint: rerun with --include-unassigned to keep tickets/scopes that did not match the filters",
+                  file=sys.stderr)
     for feat in features[:20]:
         print(f"  {feat['fwId']:<18} {len(feat['commits']):>3} commits  {feat['title'][:70]}")
 

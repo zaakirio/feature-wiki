@@ -36,6 +36,18 @@
         "Finds the colleague's existing page via marker search and updates it rather than duplicating",
         "Flags any pre-existing duplicate pages for manual merge instead of auto-deleting"
       ]
+    },
+    {
+      "name": "ai-agent-memory-auditability",
+      "query": "Build an onboarding wiki that future AI agents can safely use to understand this repo.",
+      "setup": "Repo with AI-authored commits, sparse ticket context, and one feature whose ticket description is broader than the implemented code.",
+      "expected_behavior": [
+        "Frames the output as feature-level memory, not a generic repository summary",
+        "Cites real code locations for implementation claims",
+        "Separates ticket intent from implemented behavior when they differ",
+        "Marks missing or unsupported claims as unknown instead of inventing architecture",
+        "Produces stable feature markers so future human or agent runs update the same pages"
+      ]
     }
   ]
 }

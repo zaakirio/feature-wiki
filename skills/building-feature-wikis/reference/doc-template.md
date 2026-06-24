@@ -11,6 +11,10 @@ switch via `lens` in config.)
 - **Line 1 is the dedup marker**, an HTML comment, exactly: `<!-- feature-wiki-id: <fw-id> -->`.
 - Cite real code as `path/to/file.ext:line` relative to the repo root.
 - Name actual classes, methods, tables, queues, endpoints — not vague descriptions.
+- Separate evidence from inference. If a behavior is inferred from code or ticket context rather than
+  directly stated, say so in the relevant sentence.
+- Do not invent missing architecture. If the implementation, ticket, or tests do not reveal an answer,
+  write `Unknown from available evidence` and name what would need to be checked.
 - Use ASCII diagrams for data flow / sequence / component relationships.
 - Don't include information that goes stale (dated "as of" notes); describe the current design.
 

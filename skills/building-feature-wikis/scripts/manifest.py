@@ -8,7 +8,7 @@ target by marker (see reference/providers.md), because a teammate may already ow
 Subcommands:
   diff     <features.json> [--manifest m] [--json]   classify NEW/CHANGED/UNCHANGED, print markers
   marker   <fw-id>                                   print the canonical marker string
-  record   <slug> --fwid F --provider P --page-id ID --url U --hash H [--manifest m]
+  record   <slug> --fw-id F --provider P --page-id ID --url U --hash H [--manifest m]
   rehash   <features.json>                            recompute sourceHash from commits in place
 
 Stdlib only.
@@ -25,6 +25,22 @@ def load(path):
         with open(path, encoding="utf-8") as f:
             return json.load(f)
     return {"entries": {}}
+
+
+def load_features(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print(f"error: features file not found: {path}", file=sys.stderr)
+        sys.exit(2)
+    except json.JSONDecodeError as e:
+        print(f"error: invalid JSON in {path}: {e}", file=sys.stderr)
+        sys.exit(2)
+    if "features" not in data:
+        print(f"error: {path} does not contain a top-level 'features' array", file=sys.stderr)
+        sys.exit(2)
+    return data
 
 
 def save(path, data):
@@ -49,7 +65,7 @@ def entry_key(provider, fw_id):
 
 
 def cmd_diff(args):
-    feats = json.load(open(args.features, encoding="utf-8"))["features"]
+    feats = load_features(args.features)["features"]
     man = load(args.manifest)
     results = []
     for f in feats:
@@ -69,6 +85,9 @@ def cmd_diff(args):
     if args.json:
         print(json.dumps(results, indent=2))
     else:
+        if not results:
+            print("  (no features)")
+            return
         for r in results:
             line = f"  {r['status']:<10} {r['fwId']:<18} <!-- {r['marker']} -->"
             if r["pages"]:
@@ -96,7 +115,7 @@ def cmd_record(args):
 
 
 def cmd_rehash(args):
-    data = json.load(open(args.features, encoding="utf-8"))
+    data = load_features(args.features)
     for f in data["features"]:
         f["sourceHash"] = source_hash(f["commits"])
     with open(args.features, "w", encoding="utf-8") as fh:
@@ -115,7 +134,8 @@ def main():
     m = sub.add_parser("marker"); m.add_argument("fwid"); m.set_defaults(func=cmd_marker)
 
     r = sub.add_parser("record"); r.add_argument("slug")
-    r.add_argument("--fwid", required=True); r.add_argument("--provider", required=True)
+    r.add_argument("--fw-id", "--fwid", dest="fwid", required=True)
+    r.add_argument("--provider", required=True)
     r.add_argument("--page-id", dest="page_id"); r.add_argument("--url")
     r.add_argument("--hash", required=True); r.add_argument("--updated")
     r.add_argument("--manifest", default=".featurewiki/manifest.json"); r.set_defaults(func=cmd_record)

@@ -1,19 +1,37 @@
 # feature-wiki
 
-> Turn any codebase's git history into a feature wiki, enriched with your Jira / Linear / GitHub
-> tickets and published to Confluence, Notion, a GitHub wiki, or a local HTML site.
+> Turn AI-assisted coding work into durable feature memory: cited, deduplicated, and publishable to
+> the places your team already reads.
 
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-6c5ce7)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 ![Python](https://img.shields.io/badge/scripts-Python%20stdlib%20only-3776ab)
 
-A Claude Code plugin that reconstructs the features an author shipped from **git history**, enriches
-them with **project-management ticket context** (Jira, Linear, GitHub, Shortcut, Asana, whatever MCP is
-connected), and publishes the result to **Confluence, Linear, Notion, a GitHub wiki, or a self-contained
-local HTML wiki**.
+A Claude Code plugin that reconstructs shipped features from **git history**, enriches them with
+**project-management ticket context** (Jira, Linear, GitHub, Shortcut, Asana, whatever MCP is connected),
+and publishes the result to **Confluence, Linear, Notion, a GitHub wiki, or a self-contained local HTML
+wiki**.
 
-It turns the one-off job of "document what this repo does" into a repeatable pipeline you can re-run as
-the code changes.
+The product bet is simple: as AI agents write more code, the scarce thing is no longer code volume. It
+is trustworthy memory of what changed, why it exists, where it lives, and how the next engineer or agent
+should work with it. feature-wiki turns the one-off job of "document what this repo does" into a
+repeatable pipeline you can re-run as the code changes.
+
+## What makes it valuable
+
+Most AI documentation tools summarize a repository. feature-wiki starts from shipped work and preserves
+the operational context around it:
+
+- **Feature-first, not file-first.** It groups commits into product features by ticket, branch, or
+  conventional-commit scope, so the wiki mirrors how work was planned and shipped.
+- **Grounded in real sources.** Docs must cite code as `path:line` and can pull ticket summaries,
+  descriptions, status, parent/epic links, and URLs from connected MCPs.
+- **Safe to re-run.** Every feature gets a stable marker, and shared docs targets are searched before
+  publishing so a teammate or agent does not create duplicate pages for the same ticket.
+- **Local-first by default.** With only `git` and `python3`, it produces a self-contained HTML wiki.
+  External providers add enrichment and publishing, but they are not required.
+- **Built for AI collaboration.** The output is structured enough for agents to consume on future runs,
+  and precise enough for humans to audit instead of trusting a vague repo summary.
 
 ## Why / use cases
 
@@ -33,7 +51,8 @@ them current as the code evolves. It helps whether you work solo or on a team:
 ## Requirements
 
 - **Required:** `git` and `python3` (standard library only, no packages to install). This is enough to
-  produce the local HTML wiki.
+  produce the local HTML wiki. The generated `index.html` is self-contained and opens from `file://`
+  without a server or external scripts.
 - **Optional but recommended:** an MCP connection for the parts that need external data:
   - a project-management MCP (Jira, Linear, GitHub, Shortcut, or Asana) for ticket enrichment,
   - a docs MCP (Confluence, Notion, or Linear) or the `gh` CLI for publishing to a shared space.
@@ -105,7 +124,7 @@ How to connect, in short:
 2. Run `/mcp` to authenticate and to verify what is connected.
 
 For per-provider notes (Atlassian covering Jira and Confluence, Notion, GitHub via `gh`, and so on) and
-the no-tools-connected behaviour, see
+recommended setups for Linear-first, Atlassian, Notion, GitHub-native, and local-only workflows, see
 [`reference/mcp-setup.md`](skills/building-feature-wikis/reference/mcp-setup.md).
 
 ## Layout

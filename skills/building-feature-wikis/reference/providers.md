@@ -66,8 +66,8 @@ entry: capability -> tool action -> where the marker lives.
 - **GitHub wiki / repo docs**: write `docs/feature-wiki/<slug>.md` (or push to the `.wiki` repo). The
   marker is an HTML comment on line 1: `<!-- feature-wiki-id: <ID> -->`. Update by overwriting the file
   with the matching marker. Commit, do not duplicate.
-- **Local HTML**: run `scripts/build_html.py`. The marker lives in front-matter and in `content.js`.
-  Idempotent by construction (regenerated each run).
+- **Local HTML**: run `scripts/build_html.py`. The marker lives in the source markdown comment on
+  line 1 and in the generated `content.js` bundle. Idempotent by construction (regenerated each run).
 
 ---
 
